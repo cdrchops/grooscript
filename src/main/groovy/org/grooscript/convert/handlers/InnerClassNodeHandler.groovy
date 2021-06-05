@@ -58,6 +58,8 @@ class InnerClassNodeHandler extends TraitBaseHandler {
                 } else {
                     if (functions.haveAnnotationNative(methodNode.annotations)) {
                         functions.putGsNativeMethod("${className}.${methodNode.name}", innerClassNode, methodNode)
+                    } else if (functions.haveAnnotationJsAsync(methodNode.annotations)) {
+                        functions.putJsAsyncMethod("${className}.${methodNode.name}", innerClassNode, methodNode)
                     }
                 }
                 context.actualTraitMethod = null

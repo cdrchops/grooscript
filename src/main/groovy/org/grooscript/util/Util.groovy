@@ -155,6 +155,36 @@ class Util {
         listResult
     }
 
+    static List<NativeFunction> getJSAsyncFunctions(String sourceCode, String className = null) {
+
+        List<NativeFunction> listResult = []
+
+        def pat = /(?ms)@(JsAsync|org\.grooscript\.asts\.JsAsync).+\w+\s*\(.*\)\s*\{\s*(\/\*).*(\*\/)/
+
+        sourceCode?.eachMatch(pat) { match ->
+            def list = match[0].split('@JsAsync')
+
+            list.each { functionWithNativeCode ->
+
+                if (functionWithNativeCode && functionWithNativeCode.trim().size() > 4) {
+
+                    def jsCode = functionWithNativeCode.substring(
+                            functionWithNativeCode.indexOf('/*') + 2,
+                            functionWithNativeCode.indexOf('*/')
+                    ).trim()
+                    def function = (functionWithNativeCode =~ /\w+\s*\(/)[0]
+
+                    function = function.substring(0, function.length() - 1)
+                    listResult << new NativeFunction(
+                            className: className ?: classNameFinder(sourceCode, functionWithNativeCode),
+                            code: jsCode, methodName: function.trim()
+                    )
+                }
+            }
+        }
+        listResult
+    }
+
     static boolean groovyVersionAtLeast(String version) {
         groovyVersion >= version
     }

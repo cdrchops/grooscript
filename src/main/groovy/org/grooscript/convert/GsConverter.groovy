@@ -62,7 +62,7 @@ class GsConverter {
                 }
 
                 phase++
-                result = processAstListToJs(astList, nativeFunctions + Util.getNativeFunctions(script))
+                result = processAstListToJs(astList, nativeFunctions + Util.getNativeFunctions(script), nativeFunctions + Util.getJSAsyncFunctions(script))
 
                 if (consoleInfo) {
                     GsConsole.message('Code processed.')
@@ -87,7 +87,7 @@ class GsConverter {
      * @param list
      * @return
      */
-    String processAstListToJs(list, nativeFunctions = null) {
+    String processAstListToJs(list, nativeFunctions = null, jsasyncFunctions = null) {
         def result
         if (list && list.size() > 0) {
             //println '-----------------Size('+list.size+')->'+list
@@ -96,6 +96,7 @@ class GsConverter {
             functions = conversionFactory.functions
             context = conversionFactory.context
             context.nativeFunctions = nativeFunctions
+            context.jsasyncFunctions = jsasyncFunctions
             out = conversionFactory.out
             if (conversionOptions[ConversionOptions.REQUIRE_JS_MODULE.text] == true) {
                 requireJsDependencies = []

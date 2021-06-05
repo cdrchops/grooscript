@@ -50,6 +50,11 @@ class TestAst extends Specification {
         !readAndConvert('asts/simpleNative', false).assertFails
     }
 
+//    def 'test simpleJsAsync' () {
+//        expect:
+//        !readAndConvert('asts/simpleJsAsync', true).assertFails
+//    }
+
     def 'test GsNative' () {
         when:
         def result = readAndConvert('asts/native', false)

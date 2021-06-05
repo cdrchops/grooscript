@@ -3,9 +3,10 @@ plugins {
     id "com.moowork.gulp" version "1.0.1"
     id "com.bmuschko.nexus" version "2.3.1"
     id "org.asciidoctor.convert" version "1.5.3"
-    id "net.saliman.cobertura" version "2.2.6"
+//    id "net.saliman.cobertura" version "2.2.6"
     id "com.github.kt3k.coveralls" version "2.3.1"
     id "com.github.hierynomus.license" version "0.11.0"
+    id 'maven-publish'
 }
 
 apply plugin: 'idea'
@@ -39,14 +40,14 @@ dependencies {
     testCompile "org.codehaus.groovy:groovy-test:${groovyVersion}"
 }
 
-cobertura.coverageFormats = ['html', 'xml']
-cobertura.coverageSourceDirs = sourceSets.main.groovy.srcDirs
+//cobertura.coverageFormats = ['html', 'xml']
+//cobertura.coverageSourceDirs = sourceSets.main.groovy.srcDirs
 
 jar {
     manifest {
         attributes("Implementation-Title": rootProject.name, "Implementation-Version": version)
     }
-    exclude 'META-INF/resources/**/test*.js'
+//    exclude 'META-INF/resources/**/test*.js'
 }
 
 task wrapper(type: Wrapper) {
@@ -64,7 +65,7 @@ task generateGrooscriptToolsFiles(type: JavaExec) {
 }
 
 compileJava.dependsOn gulp_compress
-test.dependsOn generateGrooscriptToolsFiles, gulp_tests, gulp_test_require, licenseMain, licenseTest
+//test.dependsOn generateGrooscriptToolsFiles, gulp_tests, gulp_test_require, licenseMain, licenseTest
 
 asciidoctor {
     sourceDir = project.file 'doc'
@@ -83,4 +84,16 @@ license {
     header = file('LICENSE.txt')
     include "**/*.groovy"
     includes(["**/*.java", "**/grooscript.js"])
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = group
+            artifactId = 'grooscript'
+            version = version
+
+            from components.java
+        }
+    }
 }

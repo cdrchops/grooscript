@@ -103,6 +103,8 @@ class ClassNodeHandler extends TraitBaseHandler {
                 if (method.isStatic()) {
                     if (functions.haveAnnotationNative(method.annotations)) {
                         functions.putGsNativeMethod("${node.nameWithoutPackage}.${method.name}", node, method)
+                    } else if (functions.haveAnnotationJsAsync(method.annotations)) {
+                        functions.putJsAsyncMethod("${node.nameWithoutPackage}.${method.name}", node, method)
                     } else {
                         functions.processBasicFunction("${node.nameWithoutPackage}.${method.name}", method, false)
                     }
@@ -156,6 +158,8 @@ class ClassNodeHandler extends TraitBaseHandler {
                 //Process the methods
                 if (functions.haveAnnotationNative(methodNode.annotations) && !methodNode.isStatic()) {
                     functions.putGsNativeMethod("${GS_OBJECT}.${methodNode.name}", classNode, methodNode)
+                } else if (functions.haveAnnotationJsAsync(methodNode.annotations) && !methodNode.isStatic()) {
+                    functions.putJsAsyncMethod("${GS_OBJECT}.${methodNode.name}", classNode, methodNode)
                 } else if (!methodNode.isStatic()) {
                     if (methodNode.name == 'propertyMissing' && methodNode.parameters.length == 2) {
                         functions.processBasicFunction("${GS_OBJECT}['setPropertyMissing']", methodNode, false)

@@ -146,6 +146,28 @@ class Functions {
         conversionFactory.out.addScript('}', true)
     }
 
+    boolean haveAnnotationJsAsync(annotations) {
+        boolean exit = false
+        annotations.each { AnnotationNode it ->
+            //If native then exit
+            if (it.getClassNode().nameWithoutPackage == 'JsAsync') {
+                exit = true
+            }
+        }
+        exit
+    }
+
+    void putJsAsyncMethod(String name, ClassNode classNode, MethodNode method) {
+        conversionFactory.out.addScript("${name} = async function(")
+        conversionFactory.context.actualScope.push([])
+        conversionFactory.functions.processFunctionOrMethodParameters(method, false, false)
+        conversionFactory.context.actualScope.pop()
+        conversionFactory.out.addScript(conversionFactory.context.getJSAsyncFunction(classNode, method), true)
+        conversionFactory.out.indent--
+        conversionFactory.out.removeTabScript()
+        conversionFactory.out.addScript('}', true)
+    }
+
     private boolean isArray(Parameter param) {
         //'[Ljava.lang.Object;'
         param.type.name.startsWith('[L') && param.type.name.endsWith(';')

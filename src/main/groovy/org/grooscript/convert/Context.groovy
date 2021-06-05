@@ -49,6 +49,7 @@ class Context {
 
     //Where code of native functions stored, as a map. Used for GsNative annotation
     List<NativeFunction> nativeFunctions
+    List<NativeFunction> jsasyncFunctions
 
     String currentClassMethodConverting = null
 
@@ -99,6 +100,26 @@ class Context {
             return nativeFunctionsWithClassName.first().code
         } else {
             def natives = nativeFunctions.findAll {
+                it.methodName == method.name
+            }
+            if (natives.size() == 1) {
+                return natives.first().code
+            } else if (natives.size() > 1) {
+                return natives.first().code
+            } else {
+                GsConsole.error("Don't find unique native code for method: ${method.name} in class: ${classNode.name}")
+                return ''
+            }
+        }
+    }
+
+    String getJSAsyncFunction(ClassNode classNode, MethodNode method) {
+        def nativeFunctionsWithClassName = jsasyncFunctions.findAll {
+            it.className == classNode.nameWithoutPackage && it.methodName == method.name}
+        if (nativeFunctionsWithClassName.size() == 1) {
+            return nativeFunctionsWithClassName.first().code
+        } else {
+            def natives = jsasyncFunctions.findAll {
                 it.methodName == method.name
             }
             if (natives.size() == 1) {
