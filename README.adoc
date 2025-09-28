@@ -9,8 +9,10 @@ image:https://travis-ci.org/{project-full-path}.svg?branch={github-branch}["Buil
 image:https://coveralls.io/repos/cdrchops/grooscript/badge.svg?branch={github-branch}["Coverage Status", link="https://coveralls.io/r/cdrchops/grooscript?branch={github-branch}"]
 image:https://maven-badges.herokuapp.com/maven-central/org.grooscript/grooscript/badge.svg["Maven Central Version", link="http://search.maven.org/#search|ga|1|a%3A%22grooscript%22"]
 
-== quick note
+== Quick Note
 This is a continuation of the project over at https://github.com/chiquitinxx/grooscript[chiquitinxx/grooscript] - I thank Jorge and the team for the opportunity to continue development.  Upcoming changes will include updating the gradle script, updating the plugin, and a new feature for writing async Javascript methods.
+
+I have been working to update the entire codebase for the latest Groovy releases so that this project can continue without having a lot of issues with integration.  As well, I have some additional changes coming that include the use of async/await and more to further enhance the work that Jorge did with this amazing library.
 
 == grooscript
 
